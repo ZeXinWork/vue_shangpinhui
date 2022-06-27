@@ -1,7 +1,46 @@
 <template>
   <div class="type-nav">
     <div class="container">
-      <h2 class="all">全部商品分类</h2>
+      <div @mouseleave="handleMouseLeave">
+        <h2 class="all">全部商品分类</h2>
+        <div class="sort">
+          <div class="all-sort-list2">
+            <div
+              :class="{ hover: bgIndex === index }"
+              class="item"
+              v-for="(item, index) in categoryList"
+              :key="item.categoryId"
+              @mouseenter="handleMouseUp(index)"
+            >
+              <h3>
+                <a href="">{{ item.categoryName }}</a>
+              </h3>
+              <div
+                class="item-list clearfix"
+                :style="{ display: bgIndex === index ? 'block' : 'none' }"
+              >
+                <div
+                  class="subitem"
+                  v-for="c2 in item.categoryChild"
+                  :key="c2.categoryId"
+                >
+                  <dl class="fore">
+                    <dt>
+                      <a href="">{{ c2.categoryName }}</a>
+                    </dt>
+                    <dd>
+                      <em v-for="c3 in c2.categoryChild" :key="c3.categoryId">
+                        <a href="">{{ c3.categoryName }}</a>
+                      </em>
+                    </dd>
+                  </dl>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <nav class="nav">
         <a href="###">服装城</a>
         <a href="###">美妆馆</a>
@@ -12,55 +51,37 @@
         <a href="###">有趣</a>
         <a href="###">秒杀</a>
       </nav>
-      <div class="sort">
-        <div class="all-sort-list2">
-          <div class="item" v-for="item in categoryList" :key="item.categoryId">
-            <h3>
-              <a href="">{{ item.categoryName }}</a>
-            </h3>
-            <div class="item-list clearfix">
-              <div
-                class="subitem"
-                v-for="c2 in item.categoryChild"
-                :key="c2.categoryId"
-              >
-                <dl class="fore">
-                  <dt>
-                    <a href="">{{ c2.categoryName }}</a>
-                  </dt>
-                  <dd>
-                    <em v-for="c3 in c2.categoryChild" :key="c3.categoryId">
-                      <a href="">{{ c3.categoryName }}</a>
-                    </em>
-                  </dd>
-                </dl>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { mapState } from 'vuex'
+import Vue from "vue";
+import { mapState } from "vuex";
 export default Vue.extend({
-  name: 'TypeNav',
+  name: "TypeNav",
   mounted() {
-    this.$store.dispatch('categoryList')
+    this.$store.dispatch("categoryList");
+  },
+  data() {
+    return {
+      bgIndex: -1,
+    };
+  },
+  methods: {
+    handleMouseUp(index: number) {
+      this.bgIndex = index;
+    },
+    handleMouseLeave() {
+      this.bgIndex = -1;
+    },
   },
   computed: {
     ...mapState({
       categoryList: (state: any) => state.home.categoryList,
     }),
   },
-})
-
-function getProduct() {
-  throw new Error('Function not implemented.')
-}
+});
 </script>
 
 <style lang="scss">
@@ -172,12 +193,9 @@ function getProduct() {
               }
             }
           }
-
-          &:hover {
-            .item-list {
-              display: block;
-            }
-          }
+        }
+        .hover {
+          background: skyblue;
         }
       }
     }
