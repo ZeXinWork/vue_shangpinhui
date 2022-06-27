@@ -1,5 +1,9 @@
-import { AxiosPromise } from "axios";
-import request from "./request";
+import request from './request'
 
-export const getProduct = (): AxiosPromise<any> =>
-  request({ url: "/product/getBaseCategoryList" });
+export type category = {
+  categoryId: number
+  categoryName: string
+  categoryChild?: { categoryId: number; categoryName: string }[]
+}
+
+export const getProduct = () => request({ url: '/product/getBaseCategoryList' })
