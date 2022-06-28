@@ -1,44 +1,58 @@
 <template>
   <div class="type-nav">
     <div class="container">
-      <div @mouseleave="handleMouseLeave">
+      <div @mouseleave="handleMouseLeave" @mouseenter="handleMouseEnter">
         <h2 class="all">全部商品分类</h2>
-        <div class="sort">
-          <div class="all-sort-list2">
-            <div
-              :class="{ hover: bgIndex === index }"
-              class="item"
-              v-for="(item, index) in categoryList"
-              :key="item.categoryId"
-              @mouseenter="handleMouseUp(index)"
-            >
-              <h3>
-                <a href="">{{ item.categoryName }}</a>
-              </h3>
+        <transition name="sort">
+          <div class="sort" v-show="show">
+            <div class="all-sort-list2" @click="goSearch">
               <div
-                class="item-list clearfix"
-                :style="{ display: bgIndex === index ? 'block' : 'none' }"
+                :class="{ hover: bgIndex === index }"
+                class="item"
+                v-for="(item, index) in categoryList"
+                :key="item.categoryId"
+                @mouseenter="handleMouseUp(index)"
               >
+                <h3>
+                  <a
+                    :data-name="item.categoryName"
+                    :data-category1id="item.categoryId"
+                    >{{ item.categoryName }}</a
+                  >
+                </h3>
                 <div
-                  class="subitem"
-                  v-for="c2 in item.categoryChild"
-                  :key="c2.categoryId"
+                  class="item-list clearfix"
+                  :style="{ display: bgIndex === index ? 'block' : 'none' }"
                 >
-                  <dl class="fore">
-                    <dt>
-                      <a href="">{{ c2.categoryName }}</a>
-                    </dt>
-                    <dd>
-                      <em v-for="c3 in c2.categoryChild" :key="c3.categoryId">
-                        <a href="">{{ c3.categoryName }}</a>
-                      </em>
-                    </dd>
-                  </dl>
+                  <div
+                    class="subitem"
+                    v-for="c2 in item.categoryChild"
+                    :key="c2.categoryId"
+                  >
+                    <dl class="fore">
+                      <dt>
+                        <a
+                          :data-name="c2.categoryName"
+                          :data-category2id="c2.categoryId"
+                          >{{ c2.categoryName }}</a
+                        >
+                      </dt>
+                      <dd>
+                        <em v-for="c3 in c2.categoryChild" :key="c3.categoryId">
+                          <a
+                            :data-name="c3.categoryName"
+                            :data-category3id="c3.categoryId"
+                            >{{ item.categoryName }}</a
+                          >
+                        </em>
+                      </dd>
+                    </dl>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        </transition>
       </div>
 
       <nav class="nav">
@@ -56,24 +70,52 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import { mapState } from "vuex";
+import Vue from 'vue'
+import { mapState } from 'vuex'
+import throttle from 'lodash/throttle'
 export default Vue.extend({
-  name: "TypeNav",
+  name: 'TypeNav',
   mounted() {
-    this.$store.dispatch("categoryList");
+    this.$store.dispatch('categoryList')
+    this.show = this.$route.path === '/' ? true : false
   },
   data() {
     return {
       bgIndex: -1,
-    };
+      show: true,
+    }
   },
   methods: {
-    handleMouseUp(index: number) {
-      this.bgIndex = index;
-    },
+    handleMouseUp: throttle(function (
+      this: { bgIndex: number },
+      index: number
+    ) {
+      this.bgIndex = index
+    }),
     handleMouseLeave() {
-      this.bgIndex = -1;
+      this.bgIndex = -1
+      if (this.$route.path !== '/') {
+        this.show = false
+      }
+    },
+    handleMouseEnter() {
+      this.show = true
+    },
+    goSearch(e: any) {
+      const { name, category1id, category2id, category3id } = e.target.dataset
+      console.log(e.target.dataset)
+      const query = {
+        categoryName: name,
+      } as any
+      category1id
+        ? (query.category1id = category1id)
+        : category2id
+        ? (query.category2id = category2id)
+        : (query.category3id = category3id)
+      this.$router.push({
+        name: 'Search',
+        query,
+      })
     },
   },
   computed: {
@@ -81,7 +123,7 @@ export default Vue.extend({
       categoryList: (state: any) => state.home.categoryList,
     }),
   },
-});
+})
 </script>
 
 <style lang="scss">
@@ -199,6 +241,16 @@ export default Vue.extend({
         }
       }
     }
+  }
+  .sort-enter {
+    height: 0px !important;
+  }
+  .sort-enter-to {
+    height: 461px !important;
+  }
+  .sort-enter-active {
+    transition: all, 0.5s, linear !important;
+    overflow: hidden;
   }
 }
 </style>
