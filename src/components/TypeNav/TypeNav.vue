@@ -76,7 +76,6 @@ import throttle from 'lodash/throttle'
 export default Vue.extend({
   name: 'TypeNav',
   mounted() {
-    this.$store.dispatch('categoryList')
     this.show = this.$route.path === '/' ? true : false
   },
   data() {
