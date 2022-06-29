@@ -1,7 +1,7 @@
 import Vue from "vue";
 import VueRouter, { RawLocation, Route, RouteConfig } from "vue-router";
 import Home from "@/views/Home/Home.vue";
-import Search from "@/views/Search.vue";
+import Search from "@/views/Search/Search.vue";
 import Login from "@/views/Login.vue";
 import Register from "@/views/Register.vue";
 
