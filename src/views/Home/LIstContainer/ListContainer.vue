@@ -5,8 +5,12 @@
         <!--banner轮播-->
         <div class="swiper-container" id="mySwiper">
           <div class="swiper-wrapper">
-            <div class="swiper-slide">
-              <img src="../../../assets/images/home/banner1.jpg" />
+            <div
+              class="swiper-slide"
+              v-for="carousel in baner"
+              :key="carousel.id"
+            >
+              <img :src="carousel.imgUrl" />
             </div>
             <!-- <div class="swiper-slide">
               <img src="../../../assets/images/home/banner2.jpg" />
@@ -100,9 +104,42 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "ListContainer",
-};
+import Vue from 'vue'
+import { mapState } from 'vuex'
+import Swiper from 'swiper'
+
+export default Vue.extend({
+  name: 'ListContainer',
+  mounted() {
+    this.$store.dispatch('getBanner')
+  },
+  computed: {
+    ...mapState({
+      baner: (state: any) => state.home.banner,
+    }),
+  },
+  watch: {
+    baner() {
+      console.log('????????')
+      this.$nextTick(() => {
+        new Swiper('.swiper-container', {
+          loop: true,
+          // 如果需要分页器
+          pagination: {
+            el: '.swiper-pagination',
+            //点击小球的时候也切换图片
+            clickable: true,
+          },
+          // 如果需要前进后退按钮
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          },
+        })
+      })
+    },
+  },
+})
 </script>
 
 <style lang="scss">
