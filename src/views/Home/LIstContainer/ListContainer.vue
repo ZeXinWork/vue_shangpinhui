@@ -104,14 +104,14 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { mapState } from 'vuex'
-import Swiper from 'swiper'
+import Vue from "vue";
+import { mapState } from "vuex";
+import Swiper from "swiper";
 
 export default Vue.extend({
-  name: 'ListContainer',
+  name: "ListContainer",
   mounted() {
-    this.$store.dispatch('getBanner')
+    this.$store.dispatch("getBanner");
   },
   computed: {
     ...mapState({
@@ -120,26 +120,26 @@ export default Vue.extend({
   },
   watch: {
     baner() {
-      console.log('????????')
+      console.log("????????");
       this.$nextTick(() => {
-        new Swiper('.swiper-container', {
+        new Swiper(".swiper-container", {
           loop: true,
           // 如果需要分页器
           pagination: {
-            el: '.swiper-pagination',
+            el: ".swiper-pagination",
             //点击小球的时候也切换图片
             clickable: true,
           },
           // 如果需要前进后退按钮
           navigation: {
-            nextEl: '.swiper-button-next',
-            prevEl: '.swiper-button-prev',
+            nextEl: ".swiper-button-next",
+            prevEl: ".swiper-button-prev",
           },
-        })
-      })
+        });
+      });
     },
   },
-})
+});
 </script>
 
 <style lang="scss">

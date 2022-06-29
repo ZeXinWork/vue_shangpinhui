@@ -70,51 +70,51 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { mapState } from 'vuex'
-import throttle from 'lodash/throttle'
+import Vue from "vue";
+import { mapState } from "vuex";
+import throttle from "lodash/throttle";
 export default Vue.extend({
-  name: 'TypeNav',
+  name: "TypeNav",
   mounted() {
-    this.show = this.$route.path === '/' ? true : false
+    this.show = this.$route.path === "/" ? true : false;
   },
   data() {
     return {
       bgIndex: -1,
       show: true,
-    }
+    };
   },
   methods: {
     handleMouseUp: throttle(function (
       this: { bgIndex: number },
       index: number
     ) {
-      this.bgIndex = index
+      this.bgIndex = index;
     }),
     handleMouseLeave() {
-      this.bgIndex = -1
-      if (this.$route.path !== '/') {
-        this.show = false
+      this.bgIndex = -1;
+      if (this.$route.path !== "/") {
+        this.show = false;
       }
     },
     handleMouseEnter() {
-      this.show = true
+      this.show = true;
     },
     goSearch(e: any) {
-      const { name, category1id, category2id, category3id } = e.target.dataset
-      console.log(e.target.dataset)
+      const { name, category1id, category2id, category3id } = e.target.dataset;
+      console.log(e.target.dataset);
       const query = {
         categoryName: name,
-      } as any
+      } as any;
       category1id
         ? (query.category1id = category1id)
         : category2id
         ? (query.category2id = category2id)
-        : (query.category3id = category3id)
+        : (query.category3id = category3id);
       this.$router.push({
-        name: 'Search',
+        name: "Search",
         query,
-      })
+      });
     },
   },
   computed: {
@@ -122,7 +122,7 @@ export default Vue.extend({
       categoryList: (state: any) => state.home.categoryList,
     }),
   },
-})
+});
 </script>
 
 <style lang="scss">
