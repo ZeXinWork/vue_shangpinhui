@@ -52,40 +52,40 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import Vue from "vue";
 
 export default Vue.extend({
-  name: 'Header',
+  name: "Header",
   data() {
     return {
-      keyword: '',
-    }
+      keyword: "",
+    };
   },
   methods: {
     handleSearch() {
       if (!this.keyword) {
-        alert('请输入值')
-        return
+        alert("请输入值");
+        return;
       }
       const location: {
-        name: string
+        name: string;
         params: {
-          keyword: string
-        }
-        query?: any
+          keyword: string;
+        };
+        query?: any;
       } = {
-        name: 'Search',
+        name: "Search",
         params: {
           keyword: this.keyword,
         },
-      }
+      };
       if (this.$route.query) {
-        location.query = this.$route.query
+        location.query = this.$route.query;
       }
-      this.$router.push(location)
+      this.$router.push(location);
     },
   },
-})
+});
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

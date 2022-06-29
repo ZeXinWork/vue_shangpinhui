@@ -120,7 +120,6 @@ export default Vue.extend({
   },
   watch: {
     baner() {
-      console.log("????????");
       this.$nextTick(() => {
         new Swiper(".swiper-container", {
           loop: true,
