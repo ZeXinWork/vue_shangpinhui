@@ -61,6 +61,11 @@ export default Vue.extend({
       keyword: "",
     };
   },
+  mounted() {
+    this.$bus.$on("clear", () => {
+      this.keyword = "";
+    });
+  },
   methods: {
     handleSearch() {
       if (!this.keyword) {

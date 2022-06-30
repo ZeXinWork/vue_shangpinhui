@@ -13,3 +13,6 @@ export const getProduct = () =>
 export const getBaner = () => mockRequest.get("/banner");
 
 export const getFloor = () => mockRequest.get("/floor");
+
+export const reqGetSearchInfo = (params: any) =>
+  request({ url: "/list", method: "post", data: params });

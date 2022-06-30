@@ -10,6 +10,9 @@ Vue.component("TypeNav", TypeNav);
 Vue.config.productionTip = false;
 getProduct();
 new Vue({
+  beforeCreate: function () {
+    Vue.prototype.$bus = this;
+  },
   router,
   store,
   render: (h) => h(App),
